@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tageszeiten und Songs</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Inline CSS for the results page */
+        body {
+            font-family: "Poppins-Light", sans-serif;
+            color: #FFFCA6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            background-color: #f0f0f0; /* Optional background color */
+        }
+
+        header {
+            width: 820px;
+            height: 79px;
+            color: #FF7300;
+            text-align: center;
+            font-family: Bangers;
+            font-size: 80px;
+            font-weight: 400;
+        }
+
+        .description {
+            width: 608px;
+            color: #000;
+            text-align: center;
+            font-family: Poppins;
+            font-size: 20px;
+            font-weight: 400;
+            margin: 20px 0;
+        }
+
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .info-box {
+            width: 400px;
+            height: 508px;
+            background: #FFFCA6;
+            border-radius: 30px;
+            padding: 20px;
+            margin: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #day-period-container {
+            text-align: center;
+        }
+
+        #day-period {
+            font-size: 24px;
+            color: #000;
+        }
+
+        #day-image {
+            width: 100%;
+            height: auto;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 300px;
+        }
+
+        li {
+            font-size: 28px;
+            color: #000;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>Die aktuellen Top Hits</header>
+    <p class="description">Wir liefern dir die passenden Songs für jede Tageszeit. Immer aktuell und top kuratiert vom SRF 1.</p>
+
+    <section class="info-section">
+        <div class="info-box" id="time-box">
+            <h2>DEINE TAGESZEIT</h2>
+            <div id="day-period-container">
+                <img id="day-image" alt="Tageszeit Bild" />
+                <p id="day-period"></p>
+            </div>
+        </div>
+
+        <div class="info-box" id="song-box">
+            <h2>Deine Song Empfehlung</h2>
+            <ul id="song-list"></ul>
+        </div>
+    </section>
+
+    <h2>Die Top Artists der Woche</h2>
+    <ul id="top-artists-week"></ul>
+
+    <h2>Die Top Artists des Monats</h2>
+    <ul id="top-artists-month"></ul>
+
+    <h2>Die Top Artists des Jahres</h2>
+    <ul id="top-artists-year"></ul>
+
+    <script>
+        // Fetching Sunrise-Sunset Data and Song Data
+        window.onload = function() {
+            const lat = 47.3774; // Beispielkoordinaten für Zürich
+            const lon = 8.5402;  // Beispielkoordinaten für Zürich
+            fetchSunData(lat, lon);
+            fetchSongData();
+        }
+
+        // Fetching Sunrise-Sunset Data
+        function fetchSunData(lat, lon) {
+            const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const currentTime = new Date();
+                    const sunrise = new Date(data.results.sunrise);
+                    const sunset = new Date(data.results.sunset);
+                    
+                    const period = getDayPeriod(currentTime, sunrise, sunset);
+                    document.getElementById("day-period").innerText = period;
+                    setDayImage(period); // Set the image for the current time period
+                })
+                .catch(error => console.error("Error fetching sunrise/sunset data:", error));
+        }
+
+        // Set the image based on the time period
+        function setDayImage(period) {
+            const dayImage = document.getElementById("day-image");
+            dayImage.src = `Images/${period}.jpg`; // Assuming images are in 'Images' folder
+        }
+
+        // Fetch Song Data from SRF API
+        function fetchSongData() {
+            const url = `https://il.srgssr.ch/integrationlayer/2.0/srf/songList/radio/byChannel/69e8ac16-4327-4af4-b873-fd5cd6e895a7?limit=1000&fromDate=${getLastTwoMonthsDate()}&toDate=${getTodayDate()}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.songList || data.songList.length === 0) {
+                        console.error("Keine Songs gefunden.");
+                        return;
+                    }
+                    const filteredSongs = filterAndGroupSongsByPeriod(data.songList);
+                    displaySongs(filteredSongs);
+                    fetchTopArtists();
+                })
+                .catch(error => console.error("Error fetching song data:", error));
+        }
+
+        // Display top 5 songs
+        function displaySongs(songs) {
+            const songList = document.getElementById("song-list");
+            songList.innerHTML = "";
+
+            if (songs.length === 0) {
+                const li = document.createElement("li");
+                li.textContent = "Keine Song-Empfehlungen für diese Tageszeit.";
+                songList.appendChild(li);
+                return;
+            }
+
+            songs.forEach(song => {
+                const li = document.createElement("li");
+                li.textContent = `${song.title} - ${song.artist.name}`;
+                songList.appendChild(li);
+            });
+        }
+
+        // Filter and group songs by period
+        function filterAndGroupSongsByPeriod(songs) {
+            const songCount = {};
+            songs.forEach(song => {
+                const airtime = new Date(song.date);
+                const hour = airtime.getHours();
+                const period = getDayPeriod(airtime);
+
+                const key = `${song.title} - ${song.artist.name}`;
+                songCount[key] = (songCount[key] || 0) + 1;
+            });
+
+            const sortedSongs = Object.entries(songCount).sort((a, b) => b[1] - a[1]);
+            return sortedSongs.slice(0, 5).map(song => ({ title: song[0], artist: { name: song[1] }}));
+        }
+
+        // Determine the time period
+        function getDayPeriod(currentTime) {
+            const hour = currentTime.getHours();
+            if (hour >= 6 && hour < 11) {
+                return "Morgen";
+            } else if (hour >= 11 && hour < 14) {
+                return "Mittag";
+            } else if (hour >= 14 && hour < 18) {
+                return "Nachmittag";
+            } else if (hour >= 18 && hour < 22) {
+                return "Abend";
+            } else {
+                return "Nacht";
+            }
+        }
+
+        // Fetch Top Artists
+        function fetchTopArtists() {
+            const weekUrl = `https://il.srgssr.ch/integrationlayer/2.0/srf/top-artists/week`;
+            const monthUrl = `https://il.srgssr.ch/integrationlayer/2.0/srf/top-artists/month`;
+            const yearUrl = `https://il.srgssr.ch/integrationlayer/2.0/srf/top-artists/year`;
+
+            Promise.all([
+                fetch(weekUrl).then(response => response.json()),
+                fetch(monthUrl).then(response => response.json()),
+                fetch(yearUrl).then(response => response.json())
+            ]).then(([weekData, monthData, yearData]) => {
+                displayTopArtists(weekData, "top-artists-week");
+                displayTopArtists(monthData, "top-artists-month");
+                displayTopArtists(yearData, "top-artists-year");
+            });
+        }
+
+        // Display Top Artists
+        function displayTopArtists(data, elementId) {
+            const artistList = document.getElementById(elementId);
+            artistList.innerHTML = "";
+
+            const topArtists = data.artists; // Assuming the API returns a list of artists
+            topArtists.forEach(artist => {
+                const li = document.createElement("li");
+                li.textContent = artist.name; // Adjust according to the actual data structure
+                artistList.appendChild(li);
+            });
+        }
+
+        // Helper functions to get date ranges
+        function getTodayDate() {
+            const today = new Date();
+            return today.toISOString().split('T')[0];
+        }
+
+        function getLastTwoMonthsDate() {
+            const lastTwoMonths = new Date();
+            lastTwoMonths.setMonth(lastTwoMonths.getMonth() - 2);
+            return lastTwoMonths.toISOString().split('T')[0];
+        }
+    </script>
+</body>
+
+</html>

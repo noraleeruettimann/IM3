@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tageszeiten und Songs</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Inline CSS for the start page */
+        body.start-page {
+            background-color: #FF7300;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #FFFCA6;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: Bangers, cursive;
+            font-size: 40px;
+            color: #FFFCA6;
+            width: 1225px;
+            height: 172px;
+            flex-shrink: 0;
+        }
+
+        #start-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            animation: pulse 1s infinite; /* Pulsierende Animation */
+            transform: scale(1.7);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1.7); /* Originalgröße */
+            }
+            50% {
+                transform: scale(1.9); /* Vergrößert */
+            }
+        }
+    </style>
+</head>
+
+<body class="start-page">
+    <h1>Tippe um die aktuellen 
+        top hits zu finden</h1>
+    <button id="start-button" onclick="goToResultsPage()">
+        <img src="Images/button.svg" alt="Start Button" style="width: 150px; height: auto;" />
+    </button>
+
+    <script>
+        function goToResultsPage() {
+            window.location.href = 'results.html'; // Change to the results page URL
+        }
+    </script>
+</body>
+
+</html>

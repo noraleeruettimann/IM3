@@ -1,0 +1,95 @@
+{
+  "next": "https://il.srgssr.ch/integrationlayer/2.0/srf/songList/radio/byChannel/69e8ac16-4327-4af4-b873-fd5cd6e895a7?next=4c121f9f3e50606447bc5b3de0c652c4fbb3e0c95caec9af03fd3e0abf17c91b519d2c96c7f615aa",
+  "songList": [
+     {
+        "isPlayingNow": true,
+        "date": "2024-09-24T15:02:56+02:00",
+        "duration": 210000,
+        "title": "YOU CAN LEAVE YOUR HAT ON",
+        "artist": {
+           "name": "Joe Cocker"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:57:51+02:00",
+        "duration": 119960,
+        "title": "THE LOOK OF LOVE",
+        "artist": {
+           "name": "ABC"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:52:31+02:00",
+        "duration": 175291,
+        "title": "REHAB",
+        "artist": {
+           "name": "Amy Winehouse"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:49:21+02:00",
+        "duration": 159994,
+        "title": "Cold As Ice",
+        "artist": {
+           "name": "Foreigner"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:42:16+02:00",
+        "duration": 210038,
+        "title": "BROKEN STRINGS",
+        "artist": {
+           "name": "JAMES MORRISON/NELLY FURTADO"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:39:01+02:00",
+        "duration": 155013,
+        "title": "Där Sohn vom Pfarrär",
+        "artist": {
+           "name": "Sina"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:33:31+02:00",
+        "duration": 170297,
+        "title": "She Must Have Known",
+        "artist": {
+           "name": "Chris de Burgh"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:28:06+02:00",
+        "duration": 174987,
+        "title": "If Tomorrow Never Comes",
+        "artist": {
+           "name": "Ronan Keating"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:20:51+02:00",
+        "duration": 179939,
+        "title": "I AIN'T GONNA RIDE WITH YOU",
+        "artist": {
+           "name": "JESSIE AND THE GENTS"
+        }
+     },
+     {
+        "isPlayingNow": false,
+        "date": "2024-09-24T14:17:16+02:00",
+        "duration": 180342,
+        "title": "THREE TIMES A LADY",
+        "artist": {
+           "name": "The Commodores"
+        }
+     }
+  ]
+}

@@ -1,1 +1,78 @@
-styles.css;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins-Light", sans-serif;
+    color: #FFFCA6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+header {
+    width: 868px;
+    height: 79px;
+    color: #FF7300;
+    font-family: Bangers, cursive;
+    font-size: 30px;
+}
+
+.info-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.info-box {
+    width: 400px;
+    height: 508px;
+    background: #87DBFF;
+    border-radius: 30px;
+    padding: 20px;
+    margin: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#map {
+    width: 100%;
+    height: 300px;
+    background-color: #ccc;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 40px;
+    color: #FFF;
+    font-family: Bangers, cursive;
+    margin-bottom: 10px;
+}
+
+#day-period-container {
+    text-align: center;
+}
+
+#day-period {
+    font-size: 24px;
+    color: #000;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    font-size: 18px;
+    color: #000;
+    margin: 10px 0;
+}
